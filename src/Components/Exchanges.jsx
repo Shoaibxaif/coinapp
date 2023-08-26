@@ -3,9 +3,9 @@ import axios from "axios";
 import { server } from "../index.js";
 import { Container, HStack } from "@chakra-ui/react";
 import Loader from "./Loader.jsx";
-import ExchangesCard from "./ExchangesCard.jsx";
 import Error from "./Error.jsx";
 import './Error.css'
+import ExchangesCard from "./ExchangesCard.jsx";
 
 const Exchanges = () => {
   const [exchanges, Setexchanges] = useState([]);
@@ -15,7 +15,7 @@ const Exchanges = () => {
   useEffect(() => {
     const fetchExchanges = async () => {
       try {
-        const { data } = await axios.get(`${server}/exchange`);
+        const { data } = await axios.get(`${server}/exchanges`);
         console.log(data);
         Setexchanges(data);
         Setloading(false);
