@@ -1,55 +1,63 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import {server} from '../index.js';
-import { Container, HStack } from '@chakra-ui/react';
-import Loader from './Loader.jsx';
-import ExchangesCard from './ExchangesCard.jsx';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { server } from "../index.js";
+import { Container, HStack } from "@chakra-ui/react";
+import Loader from "./Loader.jsx";
+import ExchangesCard from "./ExchangesCard.jsx";
+import Error from "./Error.jsx";
+import './Error.css'
 
 const Exchanges = () => {
+  const [exchanges, Setexchanges] = useState([]);
+  const [loading, Setloading] = useState(true);
+  const [error, seterror] = useState(false);
 
-    const [exchanges, Setexchanges] = useState([]);
-    const [loading, Setloading] = useState(true);
+  useEffect(() => {
+    const fetchExchanges = async () => {
+      try {
+        const { data } = await axios.get(`${server}/exchange`);
+        console.log(data);
+        Setexchanges(data);
+        Setloading(false);
+      } catch (error) {
+        console.error("Error fetching exchanges:", error);
+        seterror(true);
+        Setloading(false);
+      }
+    };
 
-    useEffect(() => {
-        const fetchExchanges = async () => {
-            try {
-                const { data } = await axios.get(`${server}/exchange`);
-                console.log(data)
-                Setexchanges(data);
-                Setloading(false);
-            } catch (error) {
-                console.error('Error fetching exchanges:', error);
-            }
-        };
+    fetchExchanges();
+  }, []);
 
-        fetchExchanges(); 
+  if(error){
+    return <Error/>
+  }
 
-    }, []);
-
-    return (
-        <Container maxW={"container.xl"} p={16}>
-
-        {loading? <Loader/> : (<>
-
-        <HStack  wrap={"wrap"} justifyContent={"space-evenly"} >
-
-        {
-            exchanges.map((i)=>{
-                return <>
-                <ExchangesCard key={i.id} image = {i.image} name = {i.name} url = {i.url} rank = {i.trust_score_rank}/>
+  return (
+    <Container maxW={"container.xl"} p={16}>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <HStack wrap={"wrap"} justifyContent={"space-evenly"}>
+            {exchanges.map((i) => {
+              return (
+                <>
+                  <ExchangesCard
+                    key={i.id}
+                    image={i.image}
+                    name={i.name}
+                    url={i.url}
+                    rank={i.trust_score_rank}
+                  />
                 </>
-            })
-        }
-
-        </HStack>
-
-        </>)}
-
-
-       
-
-        </Container>
-    );
-}
+              );
+            })}
+          </HStack>
+        </>
+      )}
+    </Container>
+  );
+};
 
 export default Exchanges;
