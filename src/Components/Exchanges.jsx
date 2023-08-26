@@ -13,7 +13,7 @@ const Exchanges = () => {
     useEffect(() => {
         const fetchExchanges = async () => {
             try {
-                const { data } = await axios.get(`${server}/exchanges`);
+                const { data } = await axios.get(`${server}/exchange`);
                 console.log(data)
                 Setexchanges(data);
                 Setloading(false);
@@ -36,7 +36,7 @@ const Exchanges = () => {
         {
             exchanges.map((i)=>{
                 return <>
-                <div>{i.name}</div>
+                <ExchangesCard key={i.id} image = {i.image} name = {i.name} url = {i.url} rank = {i.trust_score_rank}/>
                 </>
             })
         }
@@ -46,7 +46,7 @@ const Exchanges = () => {
         </>)}
 
 
-       <ExchangesCard></ExchangesCard>
+       
 
         </Container>
     );
