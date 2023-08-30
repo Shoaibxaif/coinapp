@@ -7,10 +7,8 @@ import {
   RadioGroup,
   Radio,
   Image,
-  Center,
   VStack,
   Text,
-  Heading,
   Stat,
   StatLabel,
   StatNumber,
@@ -99,7 +97,7 @@ const CoinDetail = () => {
                 {Date(Coin.market_data.last_updated).split("G")[0]}{" "}
               </Text>
 
-              <Text noOfLines={10} spacing={1}>
+              <Text noOfLines={10} spacing={1} my={5}>
                 {Coin.description.en}
               </Text>
             </VStack>
